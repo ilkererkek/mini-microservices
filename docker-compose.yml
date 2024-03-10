@@ -1,0 +1,56 @@
+version: "3.4"
+
+services:
+  event-bus:
+    image: event-bus
+    build:
+      context: event-bus
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 4005:4005
+  posts:
+    image: posts
+    build:
+      context: posts
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 4000:4000
+    depends_on:
+      - event-bus
+  comments:
+    image: comments
+    build:
+      context: comments
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 4001:4001
+    depends_on:
+      - event-bus
+  query:
+    image: query
+    build:
+      context: query
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 4002:4002
+    depends_on:
+      - event-bus
+  moderation:
+    image: moderation
+    build:
+      context: moderation
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 4003:4003
+    depends_on:
+      - event-bus
